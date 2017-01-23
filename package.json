@@ -1,0 +1,22 @@
+{
+  "name": "leap-three-camera-controls",
+  "version": "1.0.0",
+  "description": "Three.js Camera Controls using Leap Motion =====",
+  "main": "index.js",
+  "directories": {
+    "example": "examples"
+  },
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/CrossLead/Leap-Three-Camera-Controls.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/CrossLead/Leap-Three-Camera-Controls/issues"
+  },
+  "homepage": "https://github.com/CrossLead/Leap-Three-Camera-Controls#readme"
+}
