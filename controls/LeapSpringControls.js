@@ -1,24 +1,25 @@
-/* 
+var THREE = require('three.js');
+/*
  * Leap Spring Controls
  * Author: @Cabbibo
  *
- * http://github.com/leapmotion/Leap-Three-Camera-Controls/    
- *    
- * Copyright 2014 LeapMotion, Inc    
- *    
- * Licensed under the Apache License, Version 2.0 (the "License");    
- * you may not use this file except in compliance with the License.    
- * You may obtain a copy of the License at    
- *    
- *     http://www.apache.org/licenses/LICENSE-2.0    
- *    
- * Unless required by applicable law or agreed to in writing, software    
- * distributed under the License is distributed on an "AS IS" BASIS,    
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    
- * See the License for the specific language governing permissions and    
- * limitations under the License.    
- *    
- */    
+ * http://github.com/leapmotion/Leap-Three-Camera-Controls/
+ *
+ * Copyright 2014 LeapMotion, Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 THREE.LeapSpringControls = function ( object , controller , scene , domElement ) {
 
@@ -29,9 +30,9 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
 
   this.velocity = new THREE.Vector3();
   this.acceleration = new THREE.Vector3();
-  
+
   // API
-  
+
   this.enable = true;
 
   this.dampening        = .9;
@@ -64,14 +65,14 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
 
 
   /*
-  
+
      Functions for adding and removing markers
 
   */
   this.addTargetMarker = function( mesh ){
     this.target.add( mesh );
   }
-  
+
   this.removeTargetMarker = function( mesh ){
     this.target.remove( mesh );
   }
@@ -79,19 +80,19 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
   this.addAnchorMarker = function( mesh ){
     this.anchor.add( mesh );
   }
-  
+
   this.removeAnchorMarker = function( mesh ){
     this.anchor.remove( mesh );
   }
-  
+
   this.addHandMarker = function( mesh ){
     this.hand.add( mesh );
   }
-  
+
   this.removeHandMarker = function( mesh ){
     this.hand.remove( mesh );
   }
-  
+
   this.getForce = function(){
 
     var difference = new THREE.Vector3();
@@ -124,7 +125,7 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
     var clamp = clamp || false;
     var box = this.frame.interactionBox;
     var nPos = box.normalizePoint( position , clamp );
-    
+
     nPos[0] = (nPos[0]-.5) * this.size;
     nPos[1] = (nPos[1]-.5) * this.size;
     nPos[2] = (nPos[2]-.5) * this.size;
@@ -160,14 +161,14 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
         */
         var position    = this.leapToScene( this.frame.hands[0].palmPosition );
         position.z     -= this.size;
-        position.applyMatrix4( this.object.matrix ); 
+        position.applyMatrix4( this.object.matrix );
 
         this.hand.position = position;
 
         var pinchStrength = this.frame.hands[0].pinchStrength;
-        
+
         if( pinchStrength > .5 ){
-    
+
           this.target.position = position;
 
         }
@@ -179,18 +180,18 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
     this.oFrame = this.frame;
 
   }
-  
+
   this.update = function(){
 
     // Just incase this is overwritten somewhere else in the code
     this.object.matrixAutoUpdate = true;
 
     var f = this.controller.frame();
-          
+
     this.target.rotation.setFromRotationMatrix(camera.matrix);
-    
+
     /*
-     
+
        Since we always want to look at the anchor,
        This means that we want to make sure that it doesn't jump
        from position to position whenever we select a new target
@@ -201,7 +202,7 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
 
     var a = this.anchor.position;
     var t = this.target.position;
-   
+
     // Moves the anchor towards the target
     var dif = a.clone().sub( t );
 
@@ -211,7 +212,7 @@ THREE.LeapSpringControls = function ( object , controller , scene , domElement )
     f = this.getForce();
     this.applyForce( f );
 
-    // Makes sure that we are always looking at the 
+    // Makes sure that we are always looking at the
     // anchor position
     this.object.lookAt( this.anchor.position );
 

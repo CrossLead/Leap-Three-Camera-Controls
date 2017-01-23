@@ -6,6 +6,9 @@
   "directories": {
     "example": "examples"
   },
+  "dependencies": {
+    "three.js": "ssh://github.com/dimensia/three.js.git#fragment_sprite_2"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

@@ -1,24 +1,26 @@
+var THREE = require('three.js');
+
 /*
  * Leap Paddle Controls
  * Author: @Cabbibo
  *
- * http://github.com/leapmotion/Leap-Three-Camera-Controls/    
- *    
- * Copyright 2014 LeapMotion, Inc    
- *    
- * Licensed under the Apache License, Version 2.0 (the "License");    
- * you may not use this file except in compliance with the License.    
- * You may obtain a copy of the License at    
- *    
- *     http://www.apache.org/licenses/LICENSE-2.0    
- *    
- * Unless required by applicable law or agreed to in writing, software    
- * distributed under the License is distributed on an "AS IS" BASIS,    
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    
- * See the License for the specific language governing permissions and    
- * limitations under the License.    
- *    
- */    
+ * http://github.com/leapmotion/Leap-Three-Camera-Controls/
+ *
+ * Copyright 2014 LeapMotion, Inc
+ *
+ * Licensed under the Apache License, Version 2.0 (the "License");
+ * you may not use this file except in compliance with the License.
+ * You may obtain a copy of the License at
+ *
+ *     http://www.apache.org/licenses/LICENSE-2.0
+ *
+ * Unless required by applicable law or agreed to in writing, software
+ * distributed under the License is distributed on an "AS IS" BASIS,
+ * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+ * See the License for the specific language governing permissions and
+ * limitations under the License.
+ *
+ */
 
 THREE.LeapPaddleControls = function ( object , controller , params , domElement ) {
 
@@ -41,7 +43,7 @@ THREE.LeapPaddleControls = function ( object , controller , params , domElement 
   this.maxSpeed             = 10;
 
   // API
-  
+
   this.velocity = new THREE.Vector3();
   this.handVel = new THREE.Vector3();
   this.handNorm = new THREE.Vector3();
@@ -62,12 +64,12 @@ THREE.LeapPaddleControls = function ( object , controller , params , domElement 
       for( var i = 0; i < hand.fingers.length; i++ ){
 
         var finger = hand.fingers[i];
-        
+
         if( finger.extended ){
 
           var fD = finger.direction;
           var fV = finger.tipVelocity;
-            
+
           // First off see if the fingers pointed
           // the same direction as the hand
           var fDirection = new THREE.Vector3().fromArray( fD );
@@ -78,8 +80,8 @@ THREE.LeapPaddleControls = function ( object , controller , params , domElement 
           var fVelocity = new THREE.Vector3().fromArray( fV );
           var tmp = fVelocity.clone();
           var velocityMatch = Math.abs( tmp.normalize().dot( hNormal ) );
-         
-   
+
+
 
           if( fingerMatch < this.fingerMatchCutoff ){
             fingerMatch = 0;
@@ -90,20 +92,20 @@ THREE.LeapPaddleControls = function ( object , controller , params , domElement 
           }
 
           // Scaling by the neccesary Dampening factor
-          var velocityMatchFactor = Math.pow( 
-            velocityMatch, 
+          var velocityMatchFactor = Math.pow(
+            velocityMatch,
             this.velocityMatchPower
           );
 
-          var fingerMatchFactor = Math.pow( 
-            fingerMatch, 
+          var fingerMatchFactor = Math.pow(
+            fingerMatch,
             this.fingerMatchPower
           );
 
           var matchFactor = fingerMatchFactor * velocityMatchFactor;
           var speedFactor = this.movementSpeed / 10000;
           var multiplier  = matchFactor * speedFactor;
-          
+
           fVelocity.multiplyScalar( multiplier );
 
           totalForce.add( fVelocity );
@@ -154,11 +156,11 @@ THREE.LeapPaddleControls = function ( object , controller , params , domElement 
     if( speed > this.maxSpeed ){
 
       this.velocity.normalize().multiplyScalar( this.maxSpeed );
-     
+
     }
 
-    
-    
+
+
     // Convert from straight X , Y , Z,
     // to the X , Y , and Z of the camera
     var vTemp = this.velocity.clone();
@@ -168,7 +170,7 @@ THREE.LeapPaddleControls = function ( object , controller , params , domElement 
     this.velocity.multiplyScalar( dampening );
 
 
-    
+
 
   }
 

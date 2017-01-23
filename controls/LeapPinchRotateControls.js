@@ -1,25 +1,26 @@
+var THREE = require('three.js');
 
-  /* 
+  /*
    * Leap Pinch Rotate Controls
    * Author: @Cabbibo
    *
-   * http://github.com/leapmotion/Leap-Three-Camera-Controls/    
-   *    
-   * Copyright 2014 LeapMotion, Inc    
-   *    
-   * Licensed under the Apache License, Version 2.0 (the "License");    
-   * you may not use this file except in compliance with the License.    
-   * You may obtain a copy of the License at    
-   *    
-   *     http://www.apache.org/licenses/LICENSE-2.0    
-   *    
-   * Unless required by applicable law or agreed to in writing, software    
-   * distributed under the License is distributed on an "AS IS" BASIS,    
-   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.    
-   * See the License for the specific language governing permissions and    
-   * limitations under the License.    
-   *    
-   */    
+   * http://github.com/leapmotion/Leap-Three-Camera-Controls/
+   *
+   * Copyright 2014 LeapMotion, Inc
+   *
+   * Licensed under the Apache License, Version 2.0 (the "License");
+   * you may not use this file except in compliance with the License.
+   * You may obtain a copy of the License at
+   *
+   *     http://www.apache.org/licenses/LICENSE-2.0
+   *
+   * Unless required by applicable law or agreed to in writing, software
+   * distributed under the License is distributed on an "AS IS" BASIS,
+   * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+   * See the License for the specific language governing permissions and
+   * limitations under the License.
+   *
+   */
 
   THREE.LeapPinchRotateControls = function ( object , controller , params, domElement ) {
 
@@ -50,7 +51,7 @@
 
     this.pinchCutoff              = .5;
     this.zoomVsRotate             = 1;
-    
+
     this.zoomEnabled              = true;
     this.zoom                     = 40;
     this.zoomDampening            = .6;
@@ -62,7 +63,7 @@
     this.getTorque = function( frame ){
 
       var torqueTotal = new THREE.Vector3();
-      
+
       if( frame.hands[0] ){
 
         if( frame.hands[0].pinchStrength > this.pinchCutoff ){
@@ -108,14 +109,14 @@
             zoomForce = -handVel[2]*this.zoomSpeedRatio*10;
 
           }
-        }        
+        }
       }
 
       return zoomForce;
 
     }
 
-    // Will have high dampening, only if we are moving 
+    // Will have high dampening, only if we are moving
     // more in the z direction than the x and y,
     // and are pinching
     this.getRotationDampening = function( frame ){
@@ -148,20 +149,20 @@
     this.update = function(){
 
       // making sure our matrix transforms don't get overwritten
-      this.object.matrixAutoUpdate = false; 
+      this.object.matrixAutoUpdate = false;
 
       var frame     = this.controller.frame();
-      
+
       var dTime     = this.clock.getDelta();
 
       var torque    = this.getTorque(     frame );
       var dampening = this.getRotationDampening(  frame );
       var dTime     = this.clock.getDelta();
-      
+
       if( this.zoomEnabled ){
-        
+
         var zoomForce = this.getZoomForce(  frame );
-      
+
         this.zoomSpeed  += zoomForce * dTime;
         this.zoom       += this.zoomSpeed;
         this.zoomSpeed  *= this.zoomDampening;
@@ -183,7 +184,7 @@
 
       this.angularVelocity.add( torque );
       this.angularVelocity.multiplyScalar( dampening );
-           
+
       var angularDistance = this.angularVelocity.clone().multiplyScalar( dTime );
 
       var axis  = angularDistance.clone().normalize();
@@ -200,7 +201,7 @@
       this.rotatingObject.rotation.setFromQuaternion( rotation );
 
       this.rotatingObject.updateMatrix();
-      
+
       this.updateCameraPosition();
 
     }
@@ -219,7 +220,7 @@
 
       var rotatedMatrix = new THREE.Matrix4();
       rotatedMatrix.multiplyMatrices( inverse , translationMatrix );
-      
+
       this.object.matrix.copy( rotatedMatrix );
       this.object.matrixWorldNeedsUpdate = true;
 
@@ -242,14 +243,14 @@
   }
 
 
-   // This function moves from a position from leap space, 
+   // This function moves from a position from leap space,
   // to a position in scene space
   this.leapToScene = function( position , clamp ){
 
     var clamp = clamp || false;
     var box = this.frame.interactionBox;
     var nPos = box.normalizePoint( position , clamp );
-    
+
     nPos[0] = (nPos[0]-.5) * this.size;
     nPos[1] = (nPos[1]-.5) * this.size;
     nPos[2] = (nPos[2]-.5) * this.size;
