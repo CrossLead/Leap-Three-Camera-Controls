@@ -1,8 +1,8 @@
-require('LeapEyeLookControls');
-require('LeapPaddleControls');
-require('LeapPinchRotateControls');
-require('LeapPointerControls');
-require('LeapSpringControls');
-require('LeapTrackballControls');
-require('LeapTwoHandControls');
-require('LeapWeightControls');
+require('./controls/LeapEyeLookControls');
+require('./controls/LeapPaddleControls');
+require('./controls/LeapPinchRotateControls');
+require('./controls/LeapPointerControls');
+require('./controls/LeapSpringControls');
+require('./controls/LeapTrackballControls');
+require('./controls/LeapTwoHandControls');
+require('./controls/LeapWeightControls');
